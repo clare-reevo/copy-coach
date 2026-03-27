@@ -1,0 +1,14 @@
+/* Reevo Copy Coach — Content Script Styles */
+/* Minimal footprint on the host page */
+
+.reevo-copy-highlight {
+  background: rgba(255, 183, 77, 0.3);
+  border-radius: 2px;
+  transition: background 0.2s ease;
+}
+
+.reevo-copy-applied {
+  background: rgba(129, 199, 132, 0.3);
+  border-radius: 2px;
+  transition: background 0.3s ease;
+}

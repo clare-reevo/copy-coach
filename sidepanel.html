@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reevo Copy Coach</title>
+  <style>
+    :root {
+      --bg: #FAFAFA;
+      --surface: #FFFFFF;
+      --border: #E8E8E8;
+      --border-focus: #B0B0B0;
+      --text-primary: #1A1A1A;
+      --text-secondary: #6B6B6B;
+      --text-muted: #999999;
+      --accent: #2D2D2D;
+      --accent-light: #F5F5F5;
+      --green: #2E7D32;
+      --green-bg: #E8F5E9;
+      --amber: #E65100;
+      --amber-bg: #FFF3E0;
+      --blue: #1565C0;
+      --blue-bg: #E3F2FD;
+      --red: #C62828;
+      --red-bg: #FFEBEE;
+      --purple: #6A1B9A;
+      --purple-bg: #F3E5F5;
+      --radius: 8px;
+      --radius-sm: 4px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-primary);
+      background: var(--bg);
+      overflow-x: hidden;
+    }
+
+    /* Header */
+    .header {
+      padding: 16px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo {
+      width: 24px;
+      height: 24px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .header-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .icon-btn {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      transition: all 0.15s;
+    }
+
+    .icon-btn:hover {
+      background: var(--accent-light);
+      color: var(--text-primary);
+    }
+
+    /* Tab navigation */
+    .tabs {
+      display: flex;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 16px;
+    }
+
+    .tab {
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border: none;
+      background: none;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+
+    .tab:hover {
+      color: var(--text-primary);
+    }
+
+    .tab.active {
+      color: var(--text-primary);
+      border-bottom-color: var(--accent);
+    }
+
+    /* Main content area */
+    .content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: calc(100vh - 140px);
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-secondary);
+    }
+
+    .empty-state-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+      opacity: 0.4;
+    }
+
+    .empty-state h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .empty-state p {
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .keyboard-shortcut {
+      display: inline-block;
+      padding: 2px 6px;
+      background: var(--accent-light);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      font-family: monospace;
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .card-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 500;
+      gap: 4px;
+    }
+
+    .badge-green { background: var(--green-bg); color: var(--green); }
+    .badge-amber { background: var(--amber-bg); color: var(--amber); }
+    .badge-blue { background: var(--blue-bg); color: var(--blue); }
+    .badge-purple { background: var(--purple-bg); color: var(--purple); }
+    .badge-red { background: var(--red-bg); color: var(--red); }
+
+    /* Original copy display */
+    .original-copy {
+      padding: 10px 12px;
+      background: var(--accent-light);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-primary);
+      border-left: 3px solid var(--border);
+    }
+
+    /* Issues list */
+    .issue {
+      display: flex;
+      gap: 8px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .issue:last-child {
+      border-bottom: none;
+    }
+
+    .issue-icon {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      margin-top: 1px;
+    }
+
+    .issue-warning .issue-icon { background: var(--amber-bg); color: var(--amber); }
+    .issue-suggestion .issue-icon { background: var(--blue-bg); color: var(--blue); }
+    .issue-info .issue-icon { background: var(--accent-light); color: var(--text-secondary); }
+
+    /* Rewrite display */
+    .rewrite-box {
+      padding: 10px 12px;
+      background: var(--green-bg);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--green);
+      border-left: 3px solid var(--green);
+    }
+
+    /* Pattern match card */
+    .pattern-card {
+      background: var(--purple-bg);
+      border: 1px solid rgba(106, 27, 154, 0.15);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+
+    .pattern-card h4 {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--purple);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pattern-example {
+      background: rgba(255,255,255,0.6);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      margin-top: 6px;
+      font-size: 12px;
+    }
+
+    .pattern-example .copy {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .pattern-example .notes {
+      color: var(--text-secondary);
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    /* Context inputs */
+    .context-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .context-section summary {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .context-section summary:hover {
+      color: var(--text-primary);
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .input-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 12px;
+      color: var(--text-primary);
+      background: var(--surface);
+      transition: border-color 0.15s;
+      outline: none;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.04);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-primary);
+      transition: all 0.15s;
+    }
+
+    .btn:hover {
+      background: var(--accent-light);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .btn-primary:hover {
+      background: #444;
+    }
+
+    .btn-success {
+      background: var(--green);
+      color: white;
+      border-color: var(--green);
+    }
+
+    .btn-success:hover {
+      background: #1B5E20;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-sm {
+      padding: 4px 10px;
+      font-size: 11px;
+    }
+
+    /* Chat area */
+    .chat-area {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .chat-messages {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 4px 0;
+    }
+
+    .chat-msg {
+      padding: 8px 10px;
+      border-radius: var(--radius);
+      font-size: 12px;
+      line-height: 1.5;
+      max-width: 90%;
+    }
+
+    .chat-msg.user {
+      background: var(--accent);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+    }
+
+    .chat-msg.assistant {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+    }
+
+    .chat-msg .suggestion {
+      margin-top: 6px;
+      padding: 6px 8px;
+      background: var(--green-bg);
+      border-radius: var(--radius-sm);
+      color: var(--green);
+      font-weight: 500;
+    }
+
+    .chat-input-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .chat-input-row input {
+      flex: 1;
+    }
+
+    /* Pattern library tab */
+    .pattern-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pattern-group {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .pattern-group-header {
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+      transition: background 0.15s;
+    }
+
+    .pattern-group-header:hover {
+      background: var(--accent-light);
+    }
+
+    .pattern-group-header .count {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    .pattern-group-body {
+      display: none;
+      padding: 0 12px 12px;
+    }
+
+    .pattern-group.open .pattern-group-body {
+      display: block;
+    }
+
+    .pattern-group .chevron {
+      transition: transform 0.15s;
+      color: var(--text-muted);
+    }
+
+    .pattern-group.open .chevron {
+      transform: rotate(90deg);
+    }
+
+    .pattern-item {
+      padding: 8px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+    }
+
+    .pattern-item:last-child {
+      border-bottom: none;
+    }
+
+    .pattern-item .context {
+      color: var(--text-muted);
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    .pattern-item .copy-text {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .pattern-item .subtext {
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .pattern-item .pattern-notes {
+      color: var(--text-secondary);
+      font-size: 11px;
+      margin-top: 4px;
+      padding-left: 8px;
+      border-left: 2px solid var(--border);
+    }
+
+    /* History tab */
+    .history-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      font-size: 12px;
+    }
+
+    .history-item .meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .history-item .meta .date {
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    .history-item .original {
+      color: var(--text-secondary);
+      text-decoration: line-through;
+    }
+
+    .history-item .approved {
+      color: var(--green);
+      font-weight: 500;
+    }
+
+    .history-item .arrow {
+      color: var(--text-muted);
+      margin: 2px 0;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--border-focus);
+    }
+
+    /* Transitions */
+    .fade-in {
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Footer */
+    .footer-note {
+      text-align: center;
+      font-size: 10px;
+      color: var(--text-muted);
+      padding: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <div class="logo">R</div>
+      <span class="header-title">Copy Coach</span>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" id="btn-history-stats" title="Stats">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+      </button>
+      <button class="icon-btn" id="btn-settings" title="Settings">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" data-tab="review">Review</button>
+    <button class="tab" data-tab="patterns">Patterns</button>
+    <button class="tab" data-tab="history">History</button>
+  </div>
+
+  <!-- Review Panel -->
+  <div class="content">
+    <div class="panel active" id="panel-review">
+
+      <!-- Input area (always visible when no review is active) -->
+      <div id="input-area">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-label">Paste copy to review</span>
+          </div>
+          <textarea id="copy-input" rows="4" placeholder="Paste your copy here — a button label, error message, tooltip, whatever you're working on..."></textarea>
+
+          <!-- Screenshot upload -->
+          <div id="screenshot-section" style="margin-top: 8px;">
+            <div id="drop-zone" style="
+              border: 1.5px dashed var(--border);
+              border-radius: var(--radius-sm);
+              padding: 12px;
+              text-align: center;
+              cursor: pointer;
+              transition: all 0.15s;
+              font-size: 12px;
+              color: var(--text-secondary);
+            ">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px; opacity: 0.5;">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+              Drop a screenshot here, or <strong>click to upload</strong>
+              <input type="file" id="screenshot-input" accept="image/*" style="display:none;" />
+            </div>
+            <div id="screenshot-preview" style="display:none; margin-top: 8px; position: relative;">
+              <img id="screenshot-img" style="max-width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border);" />
+              <button id="remove-screenshot" class="icon-btn" style="position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); color: white; border-radius: 50%; width: 22px; height: 22px;" title="Remove">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+              <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+                Type or adjust the copy from this screenshot in the text field above.
+                <em>OCR will be available when Ask Reevo is connected.</em>
+              </p>
+            </div>
+          </div>
+
+          <!-- UI element type selector -->
+          <div style="margin-top: 8px;">
+            <label class="input-label">What type of UI element is this?</label>
+            <select id="element-type" style="
+              width: 100%;
+              padding: 6px 8px;
+              border: 1px solid var(--border);
+              border-radius: var(--radius-sm);
+              font-size: 12px;
+              font-family: inherit;
+              color: var(--text-primary);
+              background: var(--surface);
+              cursor: pointer;
+              outline: none;
+              margin-top: 4px;
+            ">
+              <option value="">Auto-detect / not sure</option>
+              <option value="button">Button label</option>
+              <option value="error-message">Error message</option>
+              <option value="empty-state">Empty state</option>
+              <option value="toast">Success toast / notification</option>
+              <option value="confirmation-dialog">Confirmation dialog</option>
+              <option value="tooltip">Tooltip / hint</option>
+              <option value="onboarding">Onboarding / first-time hint</option>
+              <option value="form-helper">Form label / helper text</option>
+              <option value="heading">Heading / title</option>
+              <option value="navigation">Navigation / menu item</option>
+              <option value="body-copy">Body copy / paragraph</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary" id="btn-review" style="margin-top: 10px; width: 100%;">Review copy</button>
+        </div>
+      </div>
+
+      <!-- Review results (hidden until text is selected) -->
+      <div id="review-results" style="display:none;" class="fade-in">
+
+        <!-- Original text -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-label">Original</span>
+            <span class="badge badge-blue" id="detected-type"></span>
+          </div>
+          <div class="original-copy" id="original-text"></div>
+        </div>
+
+        <!-- Pattern match (shown if a pattern is detected) -->
+        <div id="pattern-match" style="display:none;">
+          <div class="pattern-card fade-in">
+            <h4>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              <span id="pattern-match-title">Pattern found</span>
+            </h4>
+            <p style="font-size: 12px; color: var(--purple); opacity: 0.8; margin-bottom: 6px;" id="pattern-match-desc"></p>
+            <div id="pattern-match-examples"></div>
+          </div>
+        </div>
+
+        <!-- Issues -->
+        <div class="card" id="issues-card" style="display:none;">
+          <div class="card-header">
+            <span class="card-label">Feedback</span>
+            <span class="badge" id="issues-count"></span>
+          </div>
+          <div id="issues-list"></div>
+        </div>
+
+        <!-- Summary -->
+        <div id="summary-text" style="font-size: 12px; color: var(--text-secondary); padding: 4px 0;"></div>
+
+        <!-- Rewrite -->
+        <div id="rewrite-section" style="display:none;">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-label">Suggested rewrite</span>
+            </div>
+            <div class="rewrite-box" id="rewrite-text"></div>
+            <div class="btn-group" style="margin-top: 8px;">
+              <button class="btn btn-success btn-sm" id="btn-approve">Approve & apply</button>
+              <button class="btn btn-sm" id="btn-copy-rewrite">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Context section -->
+        <details class="context-section">
+          <summary>Add context</summary>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+            <div class="input-group">
+              <label class="input-label">Notion PRD link</label>
+              <input type="text" id="notion-link" placeholder="https://notion.so/..." />
+            </div>
+            <div class="input-group">
+              <label class="input-label">Additional context</label>
+              <textarea id="additional-context" placeholder="Any variables, user states, or context the copy needs to account for..."></textarea>
+            </div>
+            <button class="btn btn-sm btn-primary" id="btn-recheck">Re-check with context</button>
+          </div>
+        </details>
+
+        <!-- Chat for revisions -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-label">Chat</span>
+          </div>
+          <div class="chat-area">
+            <div class="chat-messages" id="chat-messages">
+              <div class="chat-msg assistant">
+                Want a different take? Tell me what to adjust — tone, length, word choice, anything.
+              </div>
+            </div>
+            <div class="chat-input-row">
+              <input type="text" id="chat-input" placeholder="e.g. 'Make it shorter' or 'More playful'" />
+              <button class="btn btn-primary btn-sm" id="btn-send-chat">Send</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Patterns Panel -->
+    <div class="panel" id="panel-patterns">
+      <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">
+        Approved copy patterns for common UI elements. Use these as starting points.
+      </p>
+      <div class="pattern-list" id="pattern-list"></div>
+    </div>
+
+    <!-- History Panel -->
+    <div class="panel" id="panel-history">
+      <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">
+        Previously approved copy changes — your team's living style guide.
+      </p>
+      <div id="history-list" style="display:flex; flex-direction:column; gap:8px;"></div>
+      <div id="history-empty" class="empty-state" style="padding: 20px;">
+        <p>No approved changes yet. Review and approve copy to build your history.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settings-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:100; align-items:center; justify-content:center;">
+    <div style="background:var(--surface); border-radius:var(--radius); padding:20px; width:calc(100% - 32px); max-width:360px; box-shadow:var(--shadow-md); margin:16px;">
+      <h3 style="font-size:14px; font-weight:600; margin-bottom:12px;">Settings</h3>
+      <div class="input-group" style="margin-bottom:12px;">
+        <label class="input-label">Claude API Key</label>
+        <input type="password" id="api-key-input" placeholder="sk-ant-..." style="
+          width:100%; padding:8px 10px; border:1px solid var(--border);
+          border-radius:var(--radius-sm); font-family:monospace; font-size:12px;
+          color:var(--text-primary); background:var(--surface); outline:none;
+        " />
+        <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">
+          Get your key from <a href="https://console.anthropic.com/settings/keys" target="_blank" style="color:var(--blue);">console.anthropic.com</a>
+        </p>
+      </div>
+      <div id="api-key-status" style="font-size:11px; margin-bottom:12px; display:none;"></div>
+      <div class="btn-group" style="justify-content:flex-end;">
+        <button class="btn btn-sm" id="btn-settings-cancel">Cancel</button>
+        <button class="btn btn-sm btn-primary" id="btn-settings-save">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note" id="footer-note">
+    Powered by Claude — Reevo Copy Coach
+  </div>
+
+  <script src="mock-llm.js"></script>
+  <script src="claude-api.js"></script>
+  <script src="copy-history.js"></script>
+  <script src="sidepanel.js"></script>
+</body>
+</html>
