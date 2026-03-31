@@ -87,26 +87,20 @@ class ClaudeAPI {
   async reviewCopy(text, pattern, additionalContext) {
     const systemPrompt = this.buildSystemPrompt();
 
-    let userMessage = `Review the following product copy and provide feedback.\n\nCopy to review:\n"${text}"`;
+    let userMessage = `Rewrite this product UI copy to be clearer, more concise, and user-friendly.\n\nCopy:\n"${text}"`;
 
     if (pattern?.type) {
-      userMessage += `\n\nUI element type: ${pattern.type}`;
-      if (pattern.confidence) {
-        userMessage += ` (confidence: ${pattern.confidence})`;
-      }
+      userMessage += `\n\nThis is for a UI element type: ${pattern.type.replace(/-/g, " ")}`;
     }
 
     if (additionalContext) {
-      userMessage += `\n\nAdditional context: ${additionalContext}`;
+      userMessage += `\n\nContext: ${additionalContext}`;
     }
 
-    userMessage += `\n\nRespond with JSON in this exact format (no markdown fencing):
+    userMessage += `\n\nRespond with JSON only (no markdown fencing):
 {
-  "issues": [
-    {"type": "terminology|wordiness|clarity|length|tone", "severity": "warning|suggestion|info", "message": "description"}
-  ],
-  "rewrite": "your suggested rewrite or null if the copy is fine",
-  "summary": "1-2 sentence overall assessment"
+  "rewrite": "your improved version of the copy",
+  "summary": "1 sentence explaining what you changed and why, in a conversational tone"
 }`;
 
     const raw = await this.callClaude(
@@ -125,7 +119,7 @@ class ClaudeAPI {
       const result = JSON.parse(jsonStr);
       return {
         original: text,
-        issues: result.issues || [],
+        issues: [],
         rewrite: result.rewrite || null,
         pattern: pattern?.type && window.ReevoCopyEngine.PATTERN_LIBRARY[pattern.type]
           ? window.ReevoCopyEngine.PATTERN_LIBRARY[pattern.type]

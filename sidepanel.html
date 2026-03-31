@@ -4,31 +4,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reevo Copy Coach</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #FAFAFA;
-      --surface: #FFFFFF;
-      --border: #E8E8E8;
-      --border-focus: #B0B0B0;
-      --text-primary: #1A1A1A;
-      --text-secondary: #6B6B6B;
-      --text-muted: #999999;
-      --accent: #2D2D2D;
-      --accent-light: #F5F5F5;
-      --green: #2E7D32;
-      --green-bg: #E8F5E9;
-      --amber: #E65100;
-      --amber-bg: #FFF3E0;
-      --blue: #1565C0;
-      --blue-bg: #E3F2FD;
-      --red: #C62828;
-      --red-bg: #FFEBEE;
-      --purple: #6A1B9A;
-      --purple-bg: #F3E5F5;
-      --radius: 8px;
-      --radius-sm: 4px;
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-      --shadow-md: 0 2px 8px rgba(0,0,0,0.08);
+      --foreground: #171717;
+      --muted-foreground: #737373;
+      --background: #ffffff;
+      --card: #ffffff;
+      --accent: #f5f5f5;
+      --border: #e5e5e5;
+      --input: #e5e5e5;
+      --popover: #ffffff;
+
+      --radius-sm: 2px;
+      --radius-default: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --radius-xl: 12px;
+      --radius-xxl: 16px;
+
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.1);
+      --shadow-md: 0 2px 4px rgba(0,0,0,0.06), 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-lg: 0 4px 6px rgba(0,0,0,0.05), 0 10px 15px rgba(0,0,0,0.1);
+      --shadow-input: 0 0 18px rgba(0,0,0,0.05), 0 10px 15px rgba(0,0,0,0.06), 0 4px 6px rgba(0,0,0,0.05);
+
+      --spacing-1: 4px;
+      --spacing-1-5: 6px;
+      --spacing-2: 8px;
+      --spacing-3: 12px;
+      --spacing-4: 16px;
+      --spacing-6: 24px;
+
+      --font-size-xs: 12px;
+      --font-size-sm: 14px;
+      --font-size-lg: 18px;
+      --line-height-xs: 16px;
+      --line-height-sm: 20px;
+      --line-height-lg: 28px;
     }
 
     * {
@@ -38,591 +52,844 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      font-size: 13px;
-      line-height: 1.5;
-      color: var(--text-primary);
-      background: var(--bg);
-      overflow-x: hidden;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-size: var(--font-size-sm);
+      line-height: var(--line-height-sm);
+      color: var(--foreground);
+      background: var(--card);
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Header */
+    /* ====== HEADER ====== */
     .header {
-      padding: 16px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
+      padding: var(--spacing-6);
+      padding-bottom: 0;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      gap: var(--spacing-3);
+      flex-shrink: 0;
     }
 
     .header-left {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: var(--spacing-2);
+      flex: 1;
+      min-width: 0;
     }
 
-    .logo {
+    .header-logo {
       width: 24px;
       height: 24px;
-      background: var(--accent);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 12px;
+      flex-shrink: 0;
     }
 
     .header-title {
-      font-size: 14px;
-      font-weight: 600;
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      white-space: nowrap;
+      font-feature-settings: 'lnum' 1, 'tnum' 1;
     }
 
     .header-actions {
       display: flex;
-      gap: 4px;
+      gap: var(--spacing-1);
+      align-items: center;
+      flex-shrink: 0;
     }
 
+    /* ====== ICON BUTTONS ====== */
     .icon-btn {
       width: 28px;
       height: 28px;
       border: none;
       background: transparent;
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-default);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--text-secondary);
+      color: var(--muted-foreground);
       transition: all 0.15s;
+      flex-shrink: 0;
     }
 
     .icon-btn:hover {
-      background: var(--accent-light);
-      color: var(--text-primary);
+      background: var(--accent);
+      color: var(--foreground);
     }
 
-    /* Tab navigation */
-    .tabs {
-      display: flex;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0 16px;
+    .icon-btn.active {
+      background: var(--accent);
+      color: var(--foreground);
     }
 
-    .tab {
-      padding: 8px 12px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-secondary);
+    .icon-btn-sm {
+      width: 24px;
+      height: 24px;
+      padding: var(--spacing-1);
+    }
+
+    .icon-btn-primary {
+      width: 28px;
+      height: 28px;
+      background: var(--foreground);
+      color: white;
       border: none;
-      background: none;
+      border-radius: var(--radius-md);
       cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: all 0.15s;
-    }
-
-    .tab:hover {
-      color: var(--text-primary);
-    }
-
-    .tab.active {
-      color: var(--text-primary);
-      border-bottom-color: var(--accent);
-    }
-
-    /* Main content area */
-    .content {
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      min-height: calc(100vh - 140px);
-    }
-
-    .panel {
-      display: none;
-    }
-
-    .panel.active {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    /* Empty state */
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--text-secondary);
-    }
-
-    .empty-state-icon {
-      font-size: 32px;
-      margin-bottom: 12px;
-      opacity: 0.4;
-    }
-
-    .empty-state h3 {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 4px;
-    }
-
-    .empty-state p {
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    .keyboard-shortcut {
-      display: inline-block;
-      padding: 2px 6px;
-      background: var(--accent-light);
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      font-family: monospace;
-      font-size: 11px;
-      color: var(--text-secondary);
-    }
-
-    /* Cards */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 12px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-    }
-
-    .card-label {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-muted);
-    }
-
-    /* Badge */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 2px 8px;
-      border-radius: 10px;
-      font-size: 11px;
-      font-weight: 500;
-      gap: 4px;
-    }
-
-    .badge-green { background: var(--green-bg); color: var(--green); }
-    .badge-amber { background: var(--amber-bg); color: var(--amber); }
-    .badge-blue { background: var(--blue-bg); color: var(--blue); }
-    .badge-purple { background: var(--purple-bg); color: var(--purple); }
-    .badge-red { background: var(--red-bg); color: var(--red); }
-
-    /* Original copy display */
-    .original-copy {
-      padding: 10px 12px;
-      background: var(--accent-light);
-      border-radius: var(--radius-sm);
-      font-size: 13px;
-      line-height: 1.6;
-      color: var(--text-primary);
-      border-left: 3px solid var(--border);
-    }
-
-    /* Issues list */
-    .issue {
-      display: flex;
-      gap: 8px;
-      padding: 8px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .issue:last-child {
-      border-bottom: none;
-    }
-
-    .issue-icon {
-      flex-shrink: 0;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 10px;
-      margin-top: 1px;
+      transition: all 0.15s;
+      flex-shrink: 0;
     }
 
-    .issue-warning .issue-icon { background: var(--amber-bg); color: var(--amber); }
-    .issue-suggestion .issue-icon { background: var(--blue-bg); color: var(--blue); }
-    .issue-info .issue-icon { background: var(--accent-light); color: var(--text-secondary); }
-
-    /* Rewrite display */
-    .rewrite-box {
-      padding: 10px 12px;
-      background: var(--green-bg);
-      border-radius: var(--radius-sm);
-      font-size: 13px;
-      line-height: 1.6;
-      color: var(--green);
-      border-left: 3px solid var(--green);
+    .icon-btn-primary:hover {
+      background: #333;
     }
 
-    /* Pattern match card */
-    .pattern-card {
-      background: var(--purple-bg);
-      border: 1px solid rgba(106, 27, 154, 0.15);
-      border-radius: var(--radius);
-      padding: 12px;
+    .icon-btn-primary:disabled {
+      background: var(--border);
+      color: var(--muted-foreground);
+      cursor: not-allowed;
     }
 
-    .pattern-card h4 {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--purple);
-      margin-bottom: 6px;
+    /* ====== SCROLLABLE CHAT AREA ====== */
+    .chat-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--spacing-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-2);
+      min-height: 0;
+    }
+
+    /* ====== EMPTY STATE ====== */
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-4);
+    }
+
+    .empty-state h2 {
+      font-size: var(--font-size-lg);
+      font-weight: 500;
+      line-height: var(--line-height-lg);
+      text-align: center;
+    }
+
+    .empty-state-actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-3);
+      width: 100%;
+    }
+
+    .empty-state-item {
       display: flex;
       align-items: center;
-      gap: 6px;
-    }
-
-    .pattern-example {
-      background: rgba(255,255,255,0.6);
-      border-radius: var(--radius-sm);
-      padding: 8px 10px;
-      margin-top: 6px;
-      font-size: 12px;
-    }
-
-    .pattern-example .copy {
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .pattern-example .notes {
-      color: var(--text-secondary);
-      font-size: 11px;
-      margin-top: 4px;
-    }
-
-    /* Context inputs */
-    .context-section {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .context-section summary {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .context-section summary:hover {
-      color: var(--text-primary);
-    }
-
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .input-label {
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--text-secondary);
-    }
-
-    input[type="text"],
-    textarea {
-      width: 100%;
-      padding: 8px 10px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 12px;
-      color: var(--text-primary);
-      background: var(--surface);
-      transition: border-color 0.15s;
-      outline: none;
-    }
-
-    input[type="text"]:focus,
-    textarea:focus {
-      border-color: var(--border-focus);
-      box-shadow: 0 0 0 2px rgba(0,0,0,0.04);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 60px;
-    }
-
-    /* Buttons */
-    .btn {
-      padding: 7px 14px;
-      border-radius: var(--radius-sm);
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text-primary);
-      transition: all 0.15s;
-    }
-
-    .btn:hover {
-      background: var(--accent-light);
-    }
-
-    .btn-primary {
+      gap: var(--spacing-3);
+      padding: var(--spacing-3) var(--spacing-4);
       background: var(--accent);
-      color: white;
-      border-color: var(--accent);
-    }
-
-    .btn-primary:hover {
-      background: #444;
-    }
-
-    .btn-success {
-      background: var(--green);
-      color: white;
-      border-color: var(--green);
-    }
-
-    .btn-success:hover {
-      background: #1B5E20;
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 6px;
-    }
-
-    .btn-sm {
-      padding: 4px 10px;
-      font-size: 11px;
-    }
-
-    /* Chat area */
-    .chat-area {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      flex: 1;
-    }
-
-    .chat-messages {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-height: 200px;
-      overflow-y: auto;
-      padding: 4px 0;
-    }
-
-    .chat-msg {
-      padding: 8px 10px;
-      border-radius: var(--radius);
-      font-size: 12px;
-      line-height: 1.5;
-      max-width: 90%;
-    }
-
-    .chat-msg.user {
-      background: var(--accent);
-      color: white;
-      align-self: flex-end;
-      border-bottom-right-radius: 2px;
-    }
-
-    .chat-msg.assistant {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      align-self: flex-start;
-      border-bottom-left-radius: 2px;
-    }
-
-    .chat-msg .suggestion {
-      margin-top: 6px;
-      padding: 6px 8px;
-      background: var(--green-bg);
-      border-radius: var(--radius-sm);
-      color: var(--green);
+      border-radius: var(--radius-lg);
+      font-size: var(--font-size-sm);
       font-weight: 500;
+      color: var(--foreground);
+      cursor: default;
     }
 
-    .chat-input-row {
-      display: flex;
-      gap: 6px;
+    .empty-state-item svg {
+      flex-shrink: 0;
+      color: var(--muted-foreground);
     }
 
-    .chat-input-row input {
-      flex: 1;
+    /* ====== USER MESSAGE BUBBLE ====== */
+    .msg-user {
+      background: var(--accent);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-3);
+      position: relative;
+      cursor: pointer;
     }
 
-    /* Pattern library tab */
-    .pattern-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .pattern-group {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+    .msg-user.collapsed .msg-user-content {
+      max-height: 80px;
       overflow: hidden;
     }
 
-    .pattern-group-header {
-      padding: 10px 12px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      user-select: none;
-      transition: background 0.15s;
-    }
-
-    .pattern-group-header:hover {
-      background: var(--accent-light);
-    }
-
-    .pattern-group-header .count {
-      font-size: 11px;
-      font-weight: 400;
-      color: var(--text-muted);
-    }
-
-    .pattern-group-body {
-      display: none;
-      padding: 0 12px 12px;
-    }
-
-    .pattern-group.open .pattern-group-body {
+    .msg-user.collapsed .msg-user-fade {
       display: block;
     }
 
-    .pattern-group .chevron {
-      transition: transform 0.15s;
-      color: var(--text-muted);
+    .msg-user-content {
+      font-size: var(--font-size-sm);
+      font-weight: 400;
+      line-height: var(--line-height-sm);
+      color: var(--muted-foreground);
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
-    .pattern-group.open .chevron {
-      transform: rotate(90deg);
+    .msg-user-fade {
+      display: none;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: linear-gradient(to bottom, rgba(245,245,245,0), #f5f5f5);
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      pointer-events: none;
     }
 
-    .pattern-item {
-      padding: 8px;
-      border-bottom: 1px solid var(--border);
-      font-size: 12px;
-    }
-
-    .pattern-item:last-child {
-      border-bottom: none;
-    }
-
-    .pattern-item .context {
-      color: var(--text-muted);
-      font-size: 11px;
-      margin-bottom: 4px;
-    }
-
-    .pattern-item .copy-text {
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .pattern-item .subtext {
-      color: var(--text-secondary);
-      font-style: italic;
-    }
-
-    .pattern-item .pattern-notes {
-      color: var(--text-secondary);
-      font-size: 11px;
-      margin-top: 4px;
-      padding-left: 8px;
-      border-left: 2px solid var(--border);
-    }
-
-    /* History tab */
-    .history-item {
-      background: var(--surface);
+    .msg-user-screenshot {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-md);
+      object-fit: cover;
+      cursor: pointer;
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 10px 12px;
-      font-size: 12px;
+      margin-bottom: var(--spacing-2);
     }
 
-    .history-item .meta {
+    /* ====== ASSISTANT TEXT ====== */
+    .msg-assistant {
+      font-size: var(--font-size-sm);
+      font-weight: 400;
+      line-height: var(--line-height-sm);
+      color: var(--muted-foreground);
+    }
+
+    /* ====== REWRITE CARD ====== */
+    .rewrite-card {
+      background: var(--card);
+      border: 1px solid var(--input);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-3);
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 6px;
+      flex-direction: column;
+      gap: var(--spacing-2);
     }
 
-    .history-item .meta .date {
-      color: var(--text-muted);
-      font-size: 11px;
+    .rewrite-card-body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-2);
+      font-size: var(--font-size-sm);
+      line-height: var(--line-height-sm);
+      color: var(--foreground);
     }
 
-    .history-item .original {
-      color: var(--text-secondary);
-      text-decoration: line-through;
-    }
-
-    .history-item .approved {
-      color: var(--green);
+    .rewrite-card-body .rewrite-heading {
       font-weight: 500;
     }
 
-    .history-item .arrow {
-      color: var(--text-muted);
-      margin: 2px 0;
+    .rewrite-card-body .rewrite-body {
+      font-weight: 400;
     }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
+    .rewrite-card-actions {
+      display: flex;
+      gap: var(--spacing-2);
+      align-items: center;
     }
 
-    ::-webkit-scrollbar-track {
-      background: transparent;
+    .rewrite-card-actions .icon-btn-sm {
+      color: var(--muted-foreground);
     }
 
-    ::-webkit-scrollbar-thumb {
+    .rewrite-card-actions .icon-btn-sm:hover {
+      color: var(--foreground);
+    }
+
+    /* ====== PATTERN TAGS ====== */
+    .pattern-tags-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-2);
+    }
+
+    .pattern-tags-label {
+      font-size: var(--font-size-sm);
+      font-weight: 400;
+      line-height: var(--line-height-sm);
+      color: var(--muted-foreground);
+    }
+
+    .pattern-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-1);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: var(--font-size-xs);
+      font-weight: 500;
+      background: var(--accent);
+      color: var(--foreground);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+      line-height: var(--line-height-xs);
+    }
+
+    .tag:hover {
       background: var(--border);
-      border-radius: 3px;
     }
 
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--border-focus);
+    .tag.selected {
+      background: var(--foreground);
+      color: white;
+      border-color: var(--foreground);
     }
 
-    /* Transitions */
+    .tag .tag-close {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 2px;
+      cursor: pointer;
+    }
+
+    /* ====== FEEDBACK PILLS (thumbs down) ====== */
+    .feedback-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-1);
+      margin-top: var(--spacing-1);
+    }
+
+    /* ====== THINKING/LOADING ====== */
+    .thinking-indicator {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      color: var(--muted-foreground);
+      font-size: var(--font-size-sm);
+      padding: var(--spacing-2) 0;
+    }
+
+    .thinking-dots {
+      display: flex;
+      gap: 3px;
+    }
+
+    .thinking-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--muted-foreground);
+      animation: bounce 1.4s infinite ease-in-out both;
+    }
+
+    .thinking-dots span:nth-child(1) { animation-delay: -0.32s; }
+    .thinking-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+
+    /* ====== INPUT BAR ====== */
+    .input-bar-wrapper {
+      padding: 0 var(--spacing-6) var(--spacing-6);
+      flex-shrink: 0;
+    }
+
+    .input-bar {
+      background: var(--background);
+      border: 1px solid var(--input);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-3);
+      box-shadow: var(--shadow-input);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-2);
+    }
+
+    .input-bar textarea {
+      width: 100%;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: inherit;
+      font-size: var(--font-size-sm);
+      line-height: var(--line-height-sm);
+      color: var(--foreground);
+      background: transparent;
+      min-height: 20px;
+      max-height: 120px;
+    }
+
+    .input-bar textarea::placeholder {
+      color: var(--muted-foreground);
+    }
+
+    .input-bar-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .input-bar-tools {
+      display: flex;
+      gap: var(--spacing-2);
+      align-items: center;
+    }
+
+    /* Notion link inline field */
+    .notion-link-field {
+      display: none;
+      padding: var(--spacing-2) 0 0;
+    }
+
+    .notion-link-field.visible {
+      display: block;
+    }
+
+    .notion-link-field input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-default);
+      padding: 4px 8px;
+      font-family: inherit;
+      font-size: var(--font-size-xs);
+      color: var(--foreground);
+      outline: none;
+    }
+
+    .notion-link-field input:focus {
+      border-color: var(--muted-foreground);
+    }
+
+    /* Input tag (selected pattern) */
+    .input-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: var(--font-size-xs);
+      font-weight: 500;
+      background: var(--accent);
+      color: var(--foreground);
+      border: 1px solid var(--border);
+      line-height: var(--line-height-xs);
+    }
+
+    .input-tag .tag-close {
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      color: var(--muted-foreground);
+    }
+
+    .input-tag .tag-close:hover {
+      color: var(--foreground);
+    }
+
+    /* Screenshot preview in input */
+    .input-screenshot-preview {
+      display: none;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding-bottom: var(--spacing-2);
+    }
+
+    .input-screenshot-preview.visible {
+      display: flex;
+    }
+
+    .input-screenshot-preview img {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-default);
+      object-fit: cover;
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .input-screenshot-preview .remove-btn {
+      color: var(--muted-foreground);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-screenshot-preview .remove-btn:hover {
+      color: var(--foreground);
+    }
+
+    /* ====== PATTERN DROPDOWN ====== */
+    .pattern-dropdown-anchor {
+      position: relative;
+    }
+
+    .pattern-dropdown {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: -16px;
+      width: 218px;
+      background: var(--popover);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      padding-bottom: var(--spacing-1);
+      z-index: 50;
+    }
+
+    .pattern-dropdown.open {
+      display: block;
+    }
+
+    .pattern-dropdown-label {
+      padding: var(--spacing-3) var(--spacing-2) var(--spacing-1);
+      margin: 0 var(--spacing-1);
+      font-size: var(--font-size-xs);
+      font-weight: 500;
+      color: var(--muted-foreground);
+      line-height: var(--line-height-xs);
+    }
+
+    .pattern-dropdown-item {
+      padding: var(--spacing-1-5) var(--spacing-2);
+      margin: 0 var(--spacing-1);
+      font-size: var(--font-size-sm);
+      line-height: var(--line-height-sm);
+      color: var(--foreground);
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pattern-dropdown-item:hover {
+      background: var(--accent);
+    }
+
+    /* ====== HISTORY DRAWER ====== */
+    .drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 90;
+    }
+
+    .drawer-overlay.open {
+      display: block;
+    }
+
+    .drawer {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      background: var(--card);
+      z-index: 100;
+      flex-direction: column;
+      box-shadow: -4px 0 16px rgba(0,0,0,0.1);
+      animation: slideIn 0.2s ease;
+    }
+
+    .drawer.open {
+      display: flex;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+
+    .drawer-header {
+      padding: var(--spacing-6);
+      padding-bottom: var(--spacing-4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .drawer-header h3 {
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+    }
+
+    .drawer-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 var(--spacing-6) var(--spacing-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-3);
+    }
+
+    .history-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-3);
+      font-size: var(--font-size-sm);
+    }
+
+    .history-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-2);
+    }
+
+    .history-meta .date {
+      font-size: var(--font-size-xs);
+      color: var(--muted-foreground);
+    }
+
+    .history-original {
+      color: var(--muted-foreground);
+      text-decoration: line-through;
+      font-size: var(--font-size-sm);
+      line-height: var(--line-height-sm);
+    }
+
+    .history-arrow {
+      color: var(--border);
+      margin: 2px 0;
+      font-size: var(--font-size-xs);
+    }
+
+    .history-approved {
+      color: var(--foreground);
+      font-weight: 500;
+      font-size: var(--font-size-sm);
+      line-height: var(--line-height-sm);
+    }
+
+    .history-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted-foreground);
+      font-size: var(--font-size-sm);
+    }
+
+    .history-item {
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .history-item:hover {
+      background: var(--accent);
+    }
+
+    /* History detail view */
+    .history-detail {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .history-detail.visible {
+      display: flex;
+    }
+
+    .history-detail-header {
+      padding: var(--spacing-6);
+      padding-bottom: var(--spacing-4);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .history-detail-header .back-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-default);
+      cursor: pointer;
+      color: var(--muted-foreground);
+      flex-shrink: 0;
+    }
+
+    .history-detail-header .back-btn:hover {
+      background: var(--accent);
+      color: var(--foreground);
+    }
+
+    .history-detail-title {
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .history-detail-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--spacing-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-2);
+    }
+
+    .history-detail .msg-user {
+      cursor: default;
+    }
+
+    .history-detail .rewrite-card-actions {
+      display: none;
+    }
+
+    /* ====== SCREENSHOT MODAL ====== */
+    .screenshot-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .screenshot-modal-overlay.open {
+      display: flex;
+    }
+
+    .screenshot-modal-overlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: var(--radius-lg);
+    }
+
+    /* ====== SETTINGS MODAL ====== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      width: calc(100% - 32px);
+      max-width: 360px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .modal h3 {
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      margin-bottom: var(--spacing-3);
+    }
+
+    .modal .input-group {
+      margin-bottom: var(--spacing-3);
+    }
+
+    .modal .input-label {
+      font-size: var(--font-size-xs);
+      font-weight: 500;
+      color: var(--muted-foreground);
+      display: block;
+      margin-bottom: var(--spacing-1);
+    }
+
+    .modal input[type="password"] {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-default);
+      font-family: monospace;
+      font-size: var(--font-size-xs);
+      color: var(--foreground);
+      background: var(--background);
+      outline: none;
+    }
+
+    .modal input[type="password"]:focus {
+      border-color: var(--muted-foreground);
+    }
+
+    .modal .hint {
+      font-size: 11px;
+      color: var(--muted-foreground);
+      margin-top: var(--spacing-1);
+    }
+
+    .modal .hint a {
+      color: var(--foreground);
+      text-decoration: underline;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--spacing-2);
+    }
+
+    .btn {
+      padding: 6px 14px;
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-xs);
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--background);
+      color: var(--foreground);
+      transition: all 0.15s;
+    }
+
+    .btn:hover { background: var(--accent); }
+
+    .btn-primary {
+      background: var(--foreground);
+      color: white;
+      border-color: var(--foreground);
+    }
+
+    .btn-primary:hover { background: #333; }
+
+    /* ====== SCROLLBAR ====== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
+
+    /* ====== ANIMATIONS ====== */
     .fade-in {
       animation: fadeIn 0.2s ease;
     }
@@ -631,254 +898,171 @@
       from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    /* Footer */
-    .footer-note {
-      text-align: center;
-      font-size: 10px;
-      color: var(--text-muted);
-      padding: 12px;
-      border-top: 1px solid var(--border);
-      margin-top: auto;
-    }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- ====== HEADER ====== -->
   <div class="header">
     <div class="header-left">
-      <div class="logo">R</div>
-      <span class="header-title">Copy Coach</span>
+      <svg class="header-logo" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="6" fill="#171717"/>
+        <text x="12" y="16" text-anchor="middle" fill="white" font-family="Inter, sans-serif" font-size="12" font-weight="700">R</text>
+      </svg>
+      <span class="header-title">Reevo copy coach</span>
     </div>
     <div class="header-actions">
-      <button class="icon-btn" id="btn-history-stats" title="Stats">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+      <button class="icon-btn" id="btn-new-chat" title="New chat">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      </button>
+      <button class="icon-btn" id="btn-history" title="History">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       </button>
       <button class="icon-btn" id="btn-settings" title="Settings">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
     </div>
   </div>
 
-  <!-- Tabs -->
-  <div class="tabs">
-    <button class="tab active" data-tab="review">Review</button>
-    <button class="tab" data-tab="patterns">Patterns</button>
-    <button class="tab" data-tab="history">History</button>
+  <!-- ====== CHAT SCROLL AREA ====== -->
+  <div class="chat-scroll" id="chat-scroll">
+
+    <!-- Empty state (shown by default) -->
+    <div class="empty-state" id="empty-state">
+      <h2>Get started</h2>
+      <div class="empty-state-actions">
+        <div class="empty-state-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Paste copy in the chat
+        </div>
+        <div class="empty-state-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Add a screenshot
+        </div>
+        <div class="empty-state-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7V4a2 2 0 0 1 2-2h8.5L20 7.5V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/><polyline points="14 2 14 8 20 8"/><line x1="1" y1="13" x2="11" y2="13"/><polyline points="8 10 11 13 8 16"/></svg>
+          Select text on the page
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat messages get appended here -->
+    <div id="chat-messages" style="display:none; flex-direction:column; gap:var(--spacing-2);"></div>
   </div>
 
-  <!-- Review Panel -->
-  <div class="content">
-    <div class="panel active" id="panel-review">
-
-      <!-- Input area (always visible when no review is active) -->
-      <div id="input-area">
-        <div class="card">
-          <div class="card-header">
-            <span class="card-label">Paste copy to review</span>
-          </div>
-          <textarea id="copy-input" rows="4" placeholder="Paste your copy here — a button label, error message, tooltip, whatever you're working on..."></textarea>
-
-          <!-- Screenshot upload -->
-          <div id="screenshot-section" style="margin-top: 8px;">
-            <div id="drop-zone" style="
-              border: 1.5px dashed var(--border);
-              border-radius: var(--radius-sm);
-              padding: 12px;
-              text-align: center;
-              cursor: pointer;
-              transition: all 0.15s;
-              font-size: 12px;
-              color: var(--text-secondary);
-            ">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px; opacity: 0.5;">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                <circle cx="8.5" cy="8.5" r="1.5"/>
-                <polyline points="21 15 16 10 5 21"/>
-              </svg>
-              Drop a screenshot here, or <strong>click to upload</strong>
-              <input type="file" id="screenshot-input" accept="image/*" style="display:none;" />
-            </div>
-            <div id="screenshot-preview" style="display:none; margin-top: 8px; position: relative;">
-              <img id="screenshot-img" style="max-width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border);" />
-              <button id="remove-screenshot" class="icon-btn" style="position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); color: white; border-radius: 50%; width: 22px; height: 22px;" title="Remove">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </button>
-              <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
-                Type or adjust the copy from this screenshot in the text field above.
-                <em>OCR will be available when Ask Reevo is connected.</em>
-              </p>
-            </div>
-          </div>
-
-          <!-- UI element type selector -->
-          <div style="margin-top: 8px;">
-            <label class="input-label">What type of UI element is this?</label>
-            <select id="element-type" style="
-              width: 100%;
-              padding: 6px 8px;
-              border: 1px solid var(--border);
-              border-radius: var(--radius-sm);
-              font-size: 12px;
-              font-family: inherit;
-              color: var(--text-primary);
-              background: var(--surface);
-              cursor: pointer;
-              outline: none;
-              margin-top: 4px;
-            ">
-              <option value="">Auto-detect / not sure</option>
-              <option value="button">Button label</option>
-              <option value="error-message">Error message</option>
-              <option value="empty-state">Empty state</option>
-              <option value="toast">Success toast / notification</option>
-              <option value="confirmation-dialog">Confirmation dialog</option>
-              <option value="tooltip">Tooltip / hint</option>
-              <option value="onboarding">Onboarding / first-time hint</option>
-              <option value="form-helper">Form label / helper text</option>
-              <option value="heading">Heading / title</option>
-              <option value="navigation">Navigation / menu item</option>
-              <option value="body-copy">Body copy / paragraph</option>
-            </select>
-          </div>
-
-          <button class="btn btn-primary" id="btn-review" style="margin-top: 10px; width: 100%;">Review copy</button>
-        </div>
+  <!-- ====== INPUT BAR ====== -->
+  <div class="input-bar-wrapper">
+    <div class="input-bar" id="input-bar">
+      <!-- Screenshot preview -->
+      <div class="input-screenshot-preview" id="screenshot-preview">
+        <img id="screenshot-thumb" alt="Screenshot" />
+        <span class="remove-btn" id="remove-screenshot" title="Remove">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </span>
       </div>
 
-      <!-- Review results (hidden until text is selected) -->
-      <div id="review-results" style="display:none;" class="fade-in">
+      <!-- Textarea -->
+      <textarea id="chat-input" rows="1" placeholder="Add copy to the chat with any helpful context"></textarea>
 
-        <!-- Original text -->
-        <div class="card">
-          <div class="card-header">
-            <span class="card-label">Original</span>
-            <span class="badge badge-blue" id="detected-type"></span>
-          </div>
-          <div class="original-copy" id="original-text"></div>
-        </div>
+      <!-- Selected pattern tag -->
+      <div id="selected-pattern-tag" style="display:none;"></div>
 
-        <!-- Pattern match (shown if a pattern is detected) -->
-        <div id="pattern-match" style="display:none;">
-          <div class="pattern-card fade-in">
-            <h4>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-              <span id="pattern-match-title">Pattern found</span>
-            </h4>
-            <p style="font-size: 12px; color: var(--purple); opacity: 0.8; margin-bottom: 6px;" id="pattern-match-desc"></p>
-            <div id="pattern-match-examples"></div>
-          </div>
-        </div>
-
-        <!-- Issues -->
-        <div class="card" id="issues-card" style="display:none;">
-          <div class="card-header">
-            <span class="card-label">Feedback</span>
-            <span class="badge" id="issues-count"></span>
-          </div>
-          <div id="issues-list"></div>
-        </div>
-
-        <!-- Summary -->
-        <div id="summary-text" style="font-size: 12px; color: var(--text-secondary); padding: 4px 0;"></div>
-
-        <!-- Rewrite -->
-        <div id="rewrite-section" style="display:none;">
-          <div class="card">
-            <div class="card-header">
-              <span class="card-label">Suggested rewrite</span>
-            </div>
-            <div class="rewrite-box" id="rewrite-text"></div>
-            <div class="btn-group" style="margin-top: 8px;">
-              <button class="btn btn-success btn-sm" id="btn-approve">Approve & apply</button>
-              <button class="btn btn-sm" id="btn-copy-rewrite">Copy</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Context section -->
-        <details class="context-section">
-          <summary>Add context</summary>
-          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
-            <div class="input-group">
-              <label class="input-label">Notion PRD link</label>
-              <input type="text" id="notion-link" placeholder="https://notion.so/..." />
-            </div>
-            <div class="input-group">
-              <label class="input-label">Additional context</label>
-              <textarea id="additional-context" placeholder="Any variables, user states, or context the copy needs to account for..."></textarea>
-            </div>
-            <button class="btn btn-sm btn-primary" id="btn-recheck">Re-check with context</button>
-          </div>
-        </details>
-
-        <!-- Chat for revisions -->
-        <div class="card">
-          <div class="card-header">
-            <span class="card-label">Chat</span>
-          </div>
-          <div class="chat-area">
-            <div class="chat-messages" id="chat-messages">
-              <div class="chat-msg assistant">
-                Want a different take? Tell me what to adjust — tone, length, word choice, anything.
-              </div>
-            </div>
-            <div class="chat-input-row">
-              <input type="text" id="chat-input" placeholder="e.g. 'Make it shorter' or 'More playful'" />
-              <button class="btn btn-primary btn-sm" id="btn-send-chat">Send</button>
-            </div>
-          </div>
-        </div>
-
+      <!-- Notion link field -->
+      <div class="notion-link-field" id="notion-link-field">
+        <input type="text" id="notion-link" placeholder="Paste Notion PRD link..." />
       </div>
-    </div>
 
-    <!-- Patterns Panel -->
-    <div class="panel" id="panel-patterns">
-      <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">
-        Approved copy patterns for common UI elements. Use these as starting points.
-      </p>
-      <div class="pattern-list" id="pattern-list"></div>
-    </div>
+      <!-- Bottom toolbar -->
+      <div class="input-bar-bottom">
+        <div class="input-bar-tools">
+          <!-- Add file -->
+          <button class="icon-btn icon-btn-sm" id="btn-add-file" title="Add files or images">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <input type="file" id="file-input" accept="image/*" style="display:none;" />
 
-    <!-- History Panel -->
-    <div class="panel" id="panel-history">
-      <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">
-        Previously approved copy changes — your team's living style guide.
-      </p>
-      <div id="history-list" style="display:flex; flex-direction:column; gap:8px;"></div>
-      <div id="history-empty" class="empty-state" style="padding: 20px;">
-        <p>No approved changes yet. Review and approve copy to build your history.</p>
+          <!-- Notion link toggle -->
+          <button class="icon-btn icon-btn-sm" id="btn-notion" title="Add Notion link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L18.29 2.14c-.42-.326-.98-.7-2.055-.607L3.36 2.611c-.467.047-.56.28-.374.466l1.473 1.131zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.166V6.354c0-.606-.233-.933-.748-.886l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952l1.448.327s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V8.333L7.037 8.24c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.886.747-.933l3.222-.186z"/></svg>
+          </button>
+
+          <!-- Pattern selector -->
+          <div class="pattern-dropdown-anchor">
+            <button class="icon-btn icon-btn-sm" id="btn-pattern" title="Select UI pattern">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            </button>
+            <div class="pattern-dropdown" id="pattern-dropdown">
+              <div class="pattern-dropdown-label">What UI pattern is this copy for?</div>
+              <div class="pattern-dropdown-item" data-pattern="confirmation-message">Confirmation message</div>
+              <div class="pattern-dropdown-item" data-pattern="empty-state">Empty state</div>
+              <div class="pattern-dropdown-item" data-pattern="call-to-action">Call to action / button text</div>
+              <div class="pattern-dropdown-item" data-pattern="tooltip">Tooltip</div>
+              <div class="pattern-dropdown-item" data-pattern="help-text">Help text</div>
+              <div class="pattern-dropdown-item" data-pattern="success-message">Success message</div>
+              <div class="pattern-dropdown-item" data-pattern="destructive-action">Destructive action</div>
+              <div class="pattern-dropdown-item" data-pattern="other">Other</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Send button -->
+        <button class="icon-btn-primary" id="btn-send" disabled title="Send">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Settings Modal -->
-  <div id="settings-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:100; align-items:center; justify-content:center;">
-    <div style="background:var(--surface); border-radius:var(--radius); padding:20px; width:calc(100% - 32px); max-width:360px; box-shadow:var(--shadow-md); margin:16px;">
-      <h3 style="font-size:14px; font-weight:600; margin-bottom:12px;">Settings</h3>
-      <div class="input-group" style="margin-bottom:12px;">
+  <!-- ====== HISTORY DRAWER ====== -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <div class="drawer" id="history-drawer">
+    <!-- List view -->
+    <div id="history-list-view">
+      <div class="drawer-header">
+        <h3>History</h3>
+        <button class="icon-btn" id="btn-close-history" title="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="drawer-body" id="history-list">
+        <div class="history-empty" id="history-empty">No chats yet. Start a conversation to build your history.</div>
+      </div>
+    </div>
+
+    <!-- Detail view (chat transcript) -->
+    <div class="history-detail" id="history-detail">
+      <div class="history-detail-header">
+        <button class="back-btn" id="btn-history-back" title="Back to history">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="history-detail-title" id="history-detail-title"></span>
+      </div>
+      <div class="history-detail-messages" id="history-detail-messages"></div>
+    </div>
+  </div>
+
+  <!-- ====== SCREENSHOT MODAL ====== -->
+  <div class="screenshot-modal-overlay" id="screenshot-modal">
+    <img id="screenshot-modal-img" alt="Screenshot full view" />
+  </div>
+
+  <!-- ====== SETTINGS MODAL ====== -->
+  <div class="modal-overlay" id="settings-modal">
+    <div class="modal">
+      <h3>Settings</h3>
+      <div class="input-group">
         <label class="input-label">Claude API Key</label>
-        <input type="password" id="api-key-input" placeholder="sk-ant-..." style="
-          width:100%; padding:8px 10px; border:1px solid var(--border);
-          border-radius:var(--radius-sm); font-family:monospace; font-size:12px;
-          color:var(--text-primary); background:var(--surface); outline:none;
-        " />
-        <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">
-          Get your key from <a href="https://console.anthropic.com/settings/keys" target="_blank" style="color:var(--blue);">console.anthropic.com</a>
+        <input type="password" id="api-key-input" placeholder="sk-ant-..." />
+        <p class="hint">
+          Get your key from <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>
         </p>
       </div>
       <div id="api-key-status" style="font-size:11px; margin-bottom:12px; display:none;"></div>
-      <div class="btn-group" style="justify-content:flex-end;">
-        <button class="btn btn-sm" id="btn-settings-cancel">Cancel</button>
-        <button class="btn btn-sm btn-primary" id="btn-settings-save">Save</button>
+      <div class="modal-actions">
+        <button class="btn" id="btn-settings-cancel">Cancel</button>
+        <button class="btn btn-primary" id="btn-settings-save">Save</button>
       </div>
     </div>
-  </div>
-
-  <div class="footer-note" id="footer-note">
-    Powered by Claude — Reevo Copy Coach
   </div>
 
   <script src="mock-llm.js"></script>
